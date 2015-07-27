@@ -49,7 +49,7 @@ extern CGFloat const JKTabBarSelectionIndicatorAnimationDuration;
  */
 @property (nonatomic) BOOL selectionIndicatorAnimable UI_APPEARANCE_SELECTOR;
 
--(void)_setupBackgroundBlurViewIsHidden:(BOOL)isHidden  blurTintColor:(UIColor *)blurTintColor;
+-(void)_setupBackgroundBlurViewIsHidden:(BOOL)isHidden  blurTintColor:(UIColor *)blurTintColor backgroundlineViewColor:(UIColor *)backgroundlineViewColor;
 
 @end
 
