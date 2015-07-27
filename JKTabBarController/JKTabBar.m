@@ -18,8 +18,9 @@ static NSUInteger const JKTabBarItemDefaultSelectedIndex = 0;
 
 static CGFloat const JKTabBarButtonItemPadding      = 0.0f;
 
-static CGFloat const JKTabBarButtonItemTopMargin    = 0.0f;
+//static CGFloat const JKTabBarButtonItemTopMargin    = 0.0f;
 static CGFloat const JKTabBarButtonItemLeftMargin   = 0.0f;
+static CGFloat const JKTabBarButtonItemLeftMarginInPad   = 120.0f;
 
 CGFloat const JKTabBarSelectionIndicatorAnimationDuration = 0.3f;
 
@@ -105,7 +106,9 @@ CGFloat const JKTabBarSelectionIndicatorAnimationDuration = 0.3f;
                          animations:^
          {
              [self.backgroundBlurView setHidden:isHidden];
-             self.backgroundBlurView.blurTintColor =blurTintColor;
+             if (blurTintColor) {
+                 self.backgroundBlurView.blurTintColor =blurTintColor;
+             }
              [self.backgroundImageView setHidden:!isHidden];
          }
         completion:nil];
@@ -216,6 +219,10 @@ CGFloat const JKTabBarSelectionIndicatorAnimationDuration = 0.3f;
     
     CGFloat itemButtonWidth = (tabBarWidth - customViewWidth - (JKTabBarButtonItemPadding * self.items.count-1) - JKTabBarButtonItemLeftMargin*2) / (self.items.count - customViews.count);
     
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        itemButtonWidth = (tabBarWidth - customViewWidth - (JKTabBarButtonItemPadding * self.items.count-1) - JKTabBarButtonItemLeftMarginInPad*2) / (self.items.count - customViews.count);
+    }
+    
     return itemButtonWidth;
 }
 
@@ -225,16 +232,18 @@ CGFloat const JKTabBarSelectionIndicatorAnimationDuration = 0.3f;
     
     //set tab bar button frame
     CGFloat itemButtonWidth = self.itemButtonWidth;
-    CGSize barSize = self.bounds.size;
+    //CGSize barSize = self.bounds.size;
     
     CGFloat __block itemButtonOffsetX = JKTabBarButtonItemLeftMargin;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        itemButtonOffsetX = JKTabBarButtonItemLeftMarginInPad;
+    }
     
     [self.items enumerateObjectsUsingBlock:^(JKTabBarItem *item, NSUInteger idx, BOOL *stop) {
         UIView *itemContentView = item.contentView;
         [itemContentView sizeToFit];
         
         CGFloat itemButtonOffsetY = 0;//barSize.height - itemContentView.bounds.size.height + JKTabBarButtonItemTopMargin;
-        
         if(item.itemType == JKTabBarItemTypeButton){
             itemContentView.frame = (CGRect){
                 { itemButtonOffsetX , itemButtonOffsetY} ,
@@ -254,7 +263,8 @@ CGFloat const JKTabBarSelectionIndicatorAnimationDuration = 0.3f;
             CGFloat offsetLength = itemContentView.bounds.size.width;
             itemButtonOffsetX += (offsetLength + JKTabBarButtonItemPadding);
         }
-    }];
+        
+        }];
     
     //set selection indictor image frame
     self.selectionIndicatorImageView.frame = self.selectedItem.contentView.frame;
