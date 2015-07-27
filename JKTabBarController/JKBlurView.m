@@ -41,7 +41,7 @@
 }
 
 - (void)setup {
-    self.alpha  = 0.65f;
+    self.alpha  = 0.85f;
     [self setClipsToBounds:YES];
     
     if (![self toolbar]) {
