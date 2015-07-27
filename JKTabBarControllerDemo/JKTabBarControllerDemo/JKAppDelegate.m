@@ -20,7 +20,7 @@
     JKTabBarController *tabBarController = [[JKTabBarController alloc] init];
     self.tabBarController = tabBarController;
     tabBarController.selectedControllerNavigationItem = YES;
-//    tabBarController.shouldAdjustSelectedViewContentInsets = YES;
+    tabBarController.shouldAdjustSelectedViewContentInsets = YES;
     
     UIViewController *redViewController = [[JKViewController alloc] initWithNibName:@"JKViewController" bundle:nil];
     redViewController.tabBarItem_jk = [[JKTabBarItem alloc] initWithTitle:nil image:[UIImage imageNamed:@"home_tab_icon_1"]];
@@ -59,6 +59,7 @@
     [[JKTabBar appearance] setBackgroundImage:[UIImage imageNamed:@"mask_navbar"]];
     [[JKTabBar appearance] setSelectionIndicatorImage:[UIImage imageNamed:@"home_bottom_tab_arrow"]];
     [[JKTabBarItem appearance] setBadgeBackgroundImage:[[UIImage imageNamed:@"number_notify_9"] stretchableImageWithLeftCapWidth:16 topCapHeight:16]];
+    
     
     self.window.rootViewController = tabBarController;
     [self.window makeKeyAndVisible];

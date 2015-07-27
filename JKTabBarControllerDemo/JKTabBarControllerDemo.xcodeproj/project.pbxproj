@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1868BA831B65EBB7005F6FF5 /* JKBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1868BA821B65EBB7005F6FF5 /* JKBlurView.m */; };
 		8C0585611770001A00373848 /* _JKTabBarMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C0585601770001A00373848 /* _JKTabBarMoreViewController.m */; };
 		8C0585641770130C00373848 /* _JKTabBarEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C0585631770130C00373848 /* _JKTabBarEditViewController.m */; };
 		8C2A185717618D4E0094525A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2A185617618D4E0094525A /* UIKit.framework */; };
@@ -45,6 +46,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1868BA811B65EBB7005F6FF5 /* JKBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKBlurView.h; sourceTree = "<group>"; };
+		1868BA821B65EBB7005F6FF5 /* JKBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKBlurView.m; sourceTree = "<group>"; };
 		8C05855F1770001A00373848 /* _JKTabBarMoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JKTabBarMoreViewController.h; sourceTree = "<group>"; };
 		8C0585601770001A00373848 /* _JKTabBarMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _JKTabBarMoreViewController.m; sourceTree = "<group>"; };
 		8C0585621770130C00373848 /* _JKTabBarEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JKTabBarEditViewController.h; sourceTree = "<group>"; };
@@ -173,6 +176,8 @@
 		8C2A189117618D760094525A /* JKTabBarController */ = {
 			isa = PBXGroup;
 			children = (
+				1868BA811B65EBB7005F6FF5 /* JKBlurView.h */,
+				1868BA821B65EBB7005F6FF5 /* JKBlurView.m */,
 				8C2A189217618D8F0094525A /* JKTabBarController.h */,
 				8C2A189317618D8F0094525A /* JKTabBarController.m */,
 				8C2A189517618DA30094525A /* JKTabBar.h */,
@@ -303,6 +308,7 @@
 				8C2A186717618D4E0094525A /* JKAppDelegate.m in Sources */,
 				8C0585611770001A00373848 /* _JKTabBarMoreViewController.m in Sources */,
 				8C2A187017618D4E0094525A /* JKViewController.m in Sources */,
+				1868BA831B65EBB7005F6FF5 /* JKBlurView.m in Sources */,
 				8C2A189417618D8F0094525A /* JKTabBarController.m in Sources */,
 				8C2A189717618DA30094525A /* JKTabBar.m in Sources */,
 				8C0585641770130C00373848 /* _JKTabBarEditViewController.m in Sources */,

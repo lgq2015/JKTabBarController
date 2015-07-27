@@ -12,6 +12,7 @@
 #import "JKTabBarItem+Private.h"
 #import "_JKAppearanceProxy.h"
 #import "_JKTabBarEditViewController.h"
+#import "JKBlurView.h"
 
 static NSUInteger const JKTabBarItemDefaultSelectedIndex = 0;
 
@@ -26,6 +27,7 @@ CGFloat const JKTabBarSelectionIndicatorAnimationDuration = 0.3f;
 @property (weak, nonatomic)   UIImageView   *backgroundImageView;
 @property (weak, nonatomic)   UIImageView   *shadowImageView;
 @property (weak, nonatomic)   UIImageView   *selectionIndicatorImageView;
+@property (weak, nonatomic)   JKBlurView   *backgroundBlurView;
 
 @property (readonly, nonatomic) NSArray *allCustomButtonView;
 @property (readonly, nonatomic) CGFloat itemButtonWidth;
@@ -80,6 +82,12 @@ CGFloat const JKTabBarSelectionIndicatorAnimationDuration = 0.3f;
     backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:backgroundImageView];
     
+    JKBlurView *backgroundBlurView =[[JKBlurView alloc]initWithFrame:self.backgroundImageView.frame];
+    backgroundBlurView.autoresizingMask  = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:backgroundBlurView];
+    self.backgroundBlurView =backgroundBlurView;
+    self.backgroundBlurView.hidden =YES;
+    
     //Set up selection indicator image ivew
     UIImageView *selectionIndicatorImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     self.selectionIndicatorImageView = selectionIndicatorImageView;
@@ -87,7 +95,23 @@ CGFloat const JKTabBarSelectionIndicatorAnimationDuration = 0.3f;
     selectionIndicatorImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:selectionIndicatorImageView];
 }
-
+-(void)_setupBackgroundBlurViewIsHidden:(BOOL)isHidden  blurTintColor:(UIColor *)blurTintColor
+{
+    if (self.backgroundBlurView) {
+        
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^
+         {
+             [self.backgroundBlurView setHidden:isHidden];
+             self.backgroundBlurView.blurTintColor =blurTintColor;
+             [self.backgroundImageView setHidden:!isHidden];
+         }
+        completion:nil];
+        
+    }
+}
 - (void)_setupTabBarItems{
     [self.items enumerateObjectsUsingBlock:^(JKTabBarItem *itemButton, NSUInteger idx, BOOL *stop) {
         [itemButton.contentView removeFromSuperview];
