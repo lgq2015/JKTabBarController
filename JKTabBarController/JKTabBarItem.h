@@ -36,4 +36,8 @@
  */
 - (void)setTitlePositionAdjustment:(UIOffset)adjustment UI_APPEARANCE_SELECTOR;
 - (UIOffset)titlePositionAdjustment UI_APPEARANCE_SELECTOR;
+
+- (NSDictionary *)titleTextAttributesForState:(UIControlState)state;
+- (void)setTitleTextAttributes:(NSDictionary *)attributes forState:(UIControlState)state;
+
 @end

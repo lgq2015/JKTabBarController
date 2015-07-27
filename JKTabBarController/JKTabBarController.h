@@ -72,8 +72,6 @@ NS_INLINE BOOL JKTabBarIsHorizontal(JKTabBarPosition position) {
 
 - (void)adjustSelectedViewControllerInsetsIfNeeded;
 
-+ (CGFloat)tabBarHeight;
-
 @end
 
 @protocol JKTabBarControllerDelegate <NSObject>

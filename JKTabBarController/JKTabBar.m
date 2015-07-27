@@ -209,7 +209,7 @@ CGFloat const JKTabBarSelectionIndicatorAnimationDuration = 0.3f;
         UIView *itemContentView = item.contentView;
         [itemContentView sizeToFit];
         
-        CGFloat itemButtonOffsetY = barSize.height - itemContentView.bounds.size.height + JKTabBarButtonItemTopMargin;
+        CGFloat itemButtonOffsetY = 0;//barSize.height - itemContentView.bounds.size.height + JKTabBarButtonItemTopMargin;
         
         if(item.itemType == JKTabBarItemTypeButton){
             itemContentView.frame = (CGRect){

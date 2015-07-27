@@ -10,7 +10,7 @@
 #import "JKTabBarItem+Private.h"
 #import "_JKAppearanceProxy.h"
 
-static CGFloat const JKTabBarButtonImageVerticalOffset = 5.0f;
+static CGFloat const JKTabBarButtonImageVerticalOffset = 0.0f;
 
 static CGFloat const JKTabBarBadgeViewPopAnimationDuration = 0.4f;
 static CGFloat const JKTabBarBadgeViewFadeAnimationDuration = 0.15f;
@@ -46,27 +46,33 @@ static CGSize const JKTabBarBadgeViewMinmumSize = (CGSize){ 32.0f , 32.0f };
         imageRect.size.width  = imageRect.size.width - imageInsets.right;
         imageRect.size.height = imageRect.size.height - imageInsets.bottom;
     }
-
+    
     return imageRect;
 }
 
 - (CGRect)titleRectForContentRect:(CGRect)contentRect{
-    CGRect titleRect = [super titleRectForContentRect:CGRectInset(contentRect, -CGRectGetWidth(contentRect), 0)];
+    CGRect titleRect = [super titleRectForContentRect:contentRect];
     CGRect imageRect = [self imageRectForContentRect:contentRect];
     
+    titleRect.size.width = contentRect.size.width;
     UIEdgeInsets titleInsets = self.titleEdgeInsets;
     titleRect.origin.x = contentRect.size.width/2 - titleRect.size.width/2 - titleInsets.left;
-    titleRect.origin.y = CGRectGetMaxY(imageRect) - titleInsets.top;
+    titleRect.origin.y = CGRectGetMaxY(imageRect) - titleInsets.top - 1;
     titleRect.size.width  = titleRect.size.width - titleInsets.right;
     titleRect.size.height = titleRect.size.height - titleInsets.bottom;
     
     return titleRect;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
+}
+
 #pragma mark - Appearence
 - (void)didMoveToWindow{
     [super didMoveToWindow];
-    /* excute appearance recoraded invocation when button is moved to window. */    
+    /* excute appearance recoraded invocation when button is moved to window. */
     [[_JKAppearanceProxy appearanceForClass:[JKTabBarItem class]] startForwarding:self.tabBarItem];
 }
 
@@ -142,15 +148,21 @@ static CGSize const JKTabBarBadgeViewMinmumSize = (CGSize){ 32.0f , 32.0f };
     return UIOffsetMake(self.itemButton.titleEdgeInsets.left, self.itemButton.titleEdgeInsets.top);
 }
 
-- (void)setTitleTextAttributes:(NSDictionary *)attributes forState:(UIControlState)state{
-    /*!Need FIX: Need to compatiable with iOS 5 and iOS 7. */    
-    [self.itemButton.titleLabel setFont:attributes[NSFontAttributeName]];
-    [self.itemButton setTitleColor:attributes[NSForegroundColorAttributeName] forState:state];
-    [self.itemButton setTitleShadowColor:[attributes[NSShadowAttributeName] shadowColor] forState:state];
+- (void)setTitleTextAttributes:(NSDictionary *)attributes forState:(UIControlState)state {
+    /*!Need FIX: Need to compatiable with iOS 5 and iOS 7. */
+    if (attributes[NSFontAttributeName]) {
+        [self.itemButton.titleLabel setFont:attributes[NSFontAttributeName]];
+    }
+    if (attributes[NSForegroundColorAttributeName]) {
+        [self.itemButton setTitleColor:attributes[NSForegroundColorAttributeName] forState:state];
+    }
+    if ([attributes[NSShadowAttributeName] shadowColor]) {
+        [self.itemButton setTitleShadowColor:[attributes[NSShadowAttributeName] shadowColor] forState:state];
+    }
     [self.itemButton.titleLabel setShadowOffset:[attributes[NSShadowAttributeName] shadowOffset]];
 }
 
-- (NSDictionary *)titleTextAttributesForState:(UIControlState)state{
+- (NSDictionary *)titleTextAttributesForState:(UIControlState)state {
     /*!Need FIX: Need to compatiable with iOS 5 and iOS 7. */
     NSShadow *titleShadow = [[NSShadow alloc] init];
     titleShadow.shadowColor = [self.itemButton titleShadowColorForState:state];
@@ -184,7 +196,7 @@ static CGSize const JKTabBarBadgeViewMinmumSize = (CGSize){ 32.0f , 32.0f };
         [button setAdjustsImageWhenHighlighted:NO];
         [button setAdjustsImageWhenDisabled:NO];
         
-        [button.titleLabel setFont:[UIFont boldSystemFontOfSize:10]];
+        [button.titleLabel setFont:[UIFont systemFontOfSize:9]];
         [button setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected|UIControlStateDisabled];
     }
@@ -260,13 +272,13 @@ static CGSize const JKTabBarBadgeViewMinmumSize = (CGSize){ 32.0f , 32.0f };
 - (CGSize)badgeSize{
     [self.badgeButton sizeToFit];
     CGSize badgeSize = self.badgeButton.bounds.size;
-
+    
     if(CGRectGetWidth(self.badgeButton.bounds) < JKTabBarBadgeViewMinmumSize.width) badgeSize.width = JKTabBarBadgeViewMinmumSize.width;
     if(CGRectGetHeight(self.badgeButton.bounds) < JKTabBarBadgeViewMinmumSize.height) badgeSize.height = JKTabBarBadgeViewMinmumSize.height;
- 
+    
     badgeSize.width  = badgeSize.width - self.badgeInsets.right;
     badgeSize.height = badgeSize.height - self.badgeInsets.bottom;
-
+    
     return badgeSize;
 }
 
@@ -300,7 +312,7 @@ static NSString * const JKTabBarItemBadgeHideAnimationKey = @"JKTabBarItemBadgeH
         
         self.badgeButton.frame = (CGRect){
             {CGRectGetMidX(self.contentView.bounds) - self.badgeSize.width/2 + JKTabBarBadgeViewDefaultCenterOffset.horizontal + self.badgeInsets.left ,
-            CGRectGetMidY(self.contentView.bounds) - self.badgeSize.height/2 - JKTabBarBadgeViewDefaultCenterOffset.vertical + self.badgeInsets.top} ,
+                CGRectGetMidY(self.contentView.bounds) - self.badgeSize.height/2 - JKTabBarBadgeViewDefaultCenterOffset.vertical + self.badgeInsets.top} ,
             self.badgeSize
         };
         self.badgeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -328,7 +340,7 @@ static NSString * const JKTabBarItemBadgeHideAnimationKey = @"JKTabBarItemBadgeH
     if(finished) self.badgeButton.alpha = 0.0f;
 }
 
-#pragma mark - badge property 
+#pragma mark - badge property
 - (void)setBadgeTextAttributeds:(NSDictionary *)badgeTextAttributeds{
     /*!Need FIX: Need to compatiable with iOS 5 and iOS 7. */
     [self.badgeButton setTitleColor:badgeTextAttributeds[NSForegroundColorAttributeName] forState:UIControlStateNormal];

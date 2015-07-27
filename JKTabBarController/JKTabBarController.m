@@ -13,7 +13,7 @@
 #import "JKTabBarItem+Private.h"
 #import <objc/runtime.h>
 
-static CGFloat const JKTabBarDefaultHeight = 45.0f;
+static CGFloat const JKTabBarDefaultHeight = 46.0f;
 NSUInteger const JKTabBarMaximumItemCount = 5;
 
 @interface JKTabBarController (){
@@ -28,6 +28,7 @@ NSUInteger const JKTabBarMaximumItemCount = 5;
 @property (nonatomic,strong) JKTabBarItem                *moreTabBarItem;
 @property (nonatomic,weak)   UIView                      *containerView;
 @property (nonatomic,weak)   JKTabBar                    *tabBar;
+@property (nonatomic,readonly) CGFloat                   tabBarHeight;
 @end
 
 @implementation JKTabBarController
@@ -41,9 +42,6 @@ NSUInteger const JKTabBarMaximumItemCount = 5;
 
 #pragma mark - Private Methods
 - (void)_setupAppearence{
-    [self.tabBar removeFromSuperview];
-    [self.containerView removeFromSuperview];
-    
     JKTabBar *tabBar        = [[JKTabBar alloc] initWithFrame:CGRectZero];
     self.tabBar             = tabBar;
     tabBar.delegate         = self;
@@ -151,15 +149,15 @@ NSUInteger const JKTabBarMaximumItemCount = 5;
 }
 
 #pragma mark - Property Methods
-- (BOOL)isTabBarHidden{
+- (BOOL) isTabBarHidden{
     CGRect viewBounds = self.view.bounds;
     CGRect tabBarFrame = self.tabBar.frame;
     
     switch (self.tabBarPosition) {
         case JKTabBarPositionTop:
-            return (tabBarFrame.origin.y == -[self.class tabBarHeight]);
+            return (tabBarFrame.origin.y == -JKTabBarDefaultHeight);
         case JKTabBarPositionLeft:
-            return (tabBarFrame.origin.x == -[self.class tabBarHeight]);
+            return (tabBarFrame.origin.x == -JKTabBarDefaultHeight);
         case JKTabBarPositionRight:
             return (tabBarFrame.origin.x == viewBounds.size.width);
         default:
@@ -167,7 +165,7 @@ NSUInteger const JKTabBarMaximumItemCount = 5;
     }
 }
 
-+ (CGFloat)tabBarHeight {
+- (CGFloat)tabBarHeight{
     return JKTabBarDefaultHeight;
 }
 
@@ -186,7 +184,7 @@ NSUInteger const JKTabBarMaximumItemCount = 5;
         if(hidden){
             tabBarFrame.origin.y = viewBounds.size.height;
         }else{
-            tabBarFrame.origin.y = viewBounds.size.height - [self.class tabBarHeight];
+            tabBarFrame.origin.y = viewBounds.size.height - JKTabBarDefaultHeight;
         }
         containerViewFrame = viewBounds;
     } else {
@@ -195,21 +193,21 @@ NSUInteger const JKTabBarMaximumItemCount = 5;
             containerViewFrame = viewBounds;
             containerViewFrame.size.height += self.tabBarBackgroundTopInset;
         }else{
-            tabBarFrame.origin.y = viewBounds.size.height - [self.class tabBarHeight];
-            containerViewFrame.size.height = viewBounds.size.height - [self.class tabBarHeight] + self.tabBarBackgroundTopInset;
+            tabBarFrame.origin.y = viewBounds.size.height - JKTabBarDefaultHeight;
+            containerViewFrame.size.height = viewBounds.size.height - JKTabBarDefaultHeight + self.tabBarBackgroundTopInset;
         }
     }
     
-    self.tabBar.userInteractionEnabled = NO;
-    [UIView animateWithDuration:animated ? UINavigationControllerHideShowBarDuration : 0
+    
+    [UIView animateWithDuration:animated ? 0.2 : 0
                           delay:0
-                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent
                      animations:^{
+                         
                          self.tabBar.frame = tabBarFrame;
                          self.containerView.frame = containerViewFrame;
-                     } completion:^(BOOL finished) {
-                         self.tabBar.userInteractionEnabled = YES;
-                     }];
+                         
+                     } completion:nil];
 }
 
 - (void)setTabBarPosition:(JKTabBarPosition)tabBarPosition{
@@ -237,7 +235,7 @@ NSUInteger const JKTabBarMaximumItemCount = 5;
             break;
     }
     
-    CGRectDivide(self.view.bounds, &tabBarFrame, &containerViewFrame, self.class.tabBarHeight , rectEdge);
+    CGRectDivide(self.view.bounds, &tabBarFrame, &containerViewFrame, self.tabBarHeight , rectEdge);
     self.tabBar.frame = tabBarFrame;
     if(self.shouldAdjustSelectedViewContentInsets) {
         containerViewFrame = self.view.bounds;
@@ -299,16 +297,9 @@ NSUInteger const JKTabBarMaximumItemCount = 5;
 }
 
 #pragma mark - Initialition
-
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        [self _setupAppearence];
-    }
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    if (self = [super initWithCoder:aDecoder]) {
+- (id)init{
+    self = [super init];
+    if(self){
         [self _setupAppearence];
     }
     return self;
