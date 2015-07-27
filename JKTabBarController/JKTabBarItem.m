@@ -46,7 +46,7 @@ static CGSize const JKTabBarBadgeViewMinmumSize = (CGSize){ 32.0f , 32.0f };
         imageRect.size.width  = imageRect.size.width - imageInsets.right;
         imageRect.size.height = imageRect.size.height - imageInsets.bottom;
     }
-    
+
     return imageRect;
 }
 
@@ -72,7 +72,7 @@ static CGSize const JKTabBarBadgeViewMinmumSize = (CGSize){ 32.0f , 32.0f };
 #pragma mark - Appearence
 - (void)didMoveToWindow{
     [super didMoveToWindow];
-    /* excute appearance recoraded invocation when button is moved to window. */
+    /* excute appearance recoraded invocation when button is moved to window. */    
     [[_JKAppearanceProxy appearanceForClass:[JKTabBarItem class]] startForwarding:self.tabBarItem];
 }
 
@@ -272,13 +272,13 @@ static CGSize const JKTabBarBadgeViewMinmumSize = (CGSize){ 32.0f , 32.0f };
 - (CGSize)badgeSize{
     [self.badgeButton sizeToFit];
     CGSize badgeSize = self.badgeButton.bounds.size;
-    
+
     if(CGRectGetWidth(self.badgeButton.bounds) < JKTabBarBadgeViewMinmumSize.width) badgeSize.width = JKTabBarBadgeViewMinmumSize.width;
     if(CGRectGetHeight(self.badgeButton.bounds) < JKTabBarBadgeViewMinmumSize.height) badgeSize.height = JKTabBarBadgeViewMinmumSize.height;
-    
+ 
     badgeSize.width  = badgeSize.width - self.badgeInsets.right;
     badgeSize.height = badgeSize.height - self.badgeInsets.bottom;
-    
+
     return badgeSize;
 }
 
@@ -312,7 +312,7 @@ static NSString * const JKTabBarItemBadgeHideAnimationKey = @"JKTabBarItemBadgeH
         
         self.badgeButton.frame = (CGRect){
             {CGRectGetMidX(self.contentView.bounds) - self.badgeSize.width/2 + JKTabBarBadgeViewDefaultCenterOffset.horizontal + self.badgeInsets.left ,
-                CGRectGetMidY(self.contentView.bounds) - self.badgeSize.height/2 - JKTabBarBadgeViewDefaultCenterOffset.vertical + self.badgeInsets.top} ,
+            CGRectGetMidY(self.contentView.bounds) - self.badgeSize.height/2 - JKTabBarBadgeViewDefaultCenterOffset.vertical + self.badgeInsets.top} ,
             self.badgeSize
         };
         self.badgeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -340,7 +340,7 @@ static NSString * const JKTabBarItemBadgeHideAnimationKey = @"JKTabBarItemBadgeH
     if(finished) self.badgeButton.alpha = 0.0f;
 }
 
-#pragma mark - badge property
+#pragma mark - badge property 
 - (void)setBadgeTextAttributeds:(NSDictionary *)badgeTextAttributeds{
     /*!Need FIX: Need to compatiable with iOS 5 and iOS 7. */
     [self.badgeButton setTitleColor:badgeTextAttributeds[NSForegroundColorAttributeName] forState:UIControlStateNormal];

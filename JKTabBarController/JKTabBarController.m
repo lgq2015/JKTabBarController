@@ -234,7 +234,7 @@ NSUInteger const JKTabBarMaximumItemCount = 5;
             tabBarAutoResizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
             break;
     }
-    
+
     CGRectDivide(self.view.bounds, &tabBarFrame, &containerViewFrame, self.tabBarHeight , rectEdge);
     self.tabBar.frame = tabBarFrame;
     if(self.shouldAdjustSelectedViewContentInsets) {
@@ -288,7 +288,7 @@ NSUInteger const JKTabBarMaximumItemCount = 5;
 
 - (void)setTabBarBackgroundTopInset:(CGFloat)tabBarBackgroundTopInset{
     _tabBarBackgroundTopInset = tabBarBackgroundTopInset;
-    [self setTabBarPosition:self.tabBarPosition];
+    [self setTabBarPosition:self.tabBarPosition];    
 }
 
 - (void)setShouldAdjustSelectedViewContentInsets:(BOOL)shouldAdjustSelectedViewContentInsets {
