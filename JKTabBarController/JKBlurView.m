@@ -40,13 +40,15 @@
     return self;
 }
 
-- (void)setup {
-    self.alpha  = 0.85f;
+- (void)setup
+{
     [self setClipsToBounds:YES];
-    
     if (![self toolbar]) {
-        [self setToolbar:[[UIToolbar alloc] initWithFrame:[self bounds]]];
+        UIToolbar *toolbar =[[UIToolbar alloc] initWithFrame:[self bounds]];
+        toolbar.barStyle  = UIBarStyleBlackTranslucent;
+        [self setToolbar:toolbar];
         [self.layer insertSublayer:[self.toolbar layer] atIndex:0];
+        [self.toolbar setBarTintColor:[UIColor blackColor]];
     }
 }
 - (void) setBlurTintColor:(UIColor *)blurTintColor {
@@ -57,9 +59,4 @@
     [super layoutSubviews];
     [self.toolbar setFrame:[self bounds]];
 }
-
-- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
-   return NO;
-}
-
 @end

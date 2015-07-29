@@ -12,7 +12,6 @@
 #import "JKTabBarItem+Private.h"
 #import "_JKAppearanceProxy.h"
 #import "_JKTabBarEditViewController.h"
-#import "JKBlurView.h"
 
 static NSUInteger const JKTabBarItemDefaultSelectedIndex = 0;
 
@@ -28,9 +27,6 @@ CGFloat const JKTabBarSelectionIndicatorAnimationDuration = 0.3f;
 @property (weak, nonatomic)   UIImageView   *backgroundImageView;
 @property (weak, nonatomic)   UIImageView   *shadowImageView;
 @property (weak, nonatomic)   UIImageView   *selectionIndicatorImageView;
-@property (weak, nonatomic)   JKBlurView   *backgroundBlurView;
-@property (weak, nonatomic)   UIView       *backgroundlineView;
-
 @property (readonly, nonatomic) NSArray *allCustomButtonView;
 @property (readonly, nonatomic) CGFloat itemButtonWidth;
 
@@ -84,17 +80,6 @@ CGFloat const JKTabBarSelectionIndicatorAnimationDuration = 0.3f;
     backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:backgroundImageView];
     
-    UIView *backgroundlineView = [[UIView alloc] initWithFrame:(CGRect){ {0 , 0} , {CGRectGetWidth(self.bounds), 2} }];
-    self.backgroundlineView = backgroundlineView;
-    backgroundlineView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self addSubview:backgroundlineView];
-    backgroundlineView.hidden  =YES;
-    
-    JKBlurView *backgroundBlurView =[[JKBlurView alloc]initWithFrame:(CGRect){ {0 , 2} , {CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds)-2} }];
-    backgroundBlurView.autoresizingMask  = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self addSubview:backgroundBlurView];
-    self.backgroundBlurView =backgroundBlurView;
-    self.backgroundBlurView.hidden =YES;
     
     //Set up selection indicator image ivew
     UIImageView *selectionIndicatorImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -103,28 +88,13 @@ CGFloat const JKTabBarSelectionIndicatorAnimationDuration = 0.3f;
     selectionIndicatorImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:selectionIndicatorImageView];
 }
--(void)_setupBackgroundBlurViewIsHidden:(BOOL)isHidden  blurTintColor:(UIColor *)blurTintColor backgroundlineViewColor:(UIColor *)backgroundlineViewColor
+-(void)isBlurForHiddenPartViews:(BOOL)isBlur
 {
-    if (self.backgroundBlurView) {
-        [UIView animateWithDuration:0.5f
-                              delay:0.0f
-                            options:UIViewAnimationOptionCurveEaseOut
-                         animations:^
-         {
-             [self.backgroundBlurView setHidden:isHidden];
-             [self.backgroundlineView setHidden:isHidden];
-             if (blurTintColor) {
-                 self.backgroundBlurView.blurTintColor =blurTintColor;
-             }
-             if (backgroundlineViewColor) {
-                 self.backgroundlineView.backgroundColor  = backgroundlineViewColor;
-                 self.backgroundlineView.alpha  = 0.5 ;
-             }
-             [self.backgroundImageView setHidden:!isHidden];
-             [self.shadowImageView setHidden:!isHidden];
-         }
-        completion:nil];
-        
+    if (self.shadowImageView) {
+        self.shadowImageView.hidden = isBlur;
+    }
+    if (self.backgroundImageView) {
+        self.backgroundImageView.hidden = isBlur;
     }
 }
 - (void)_setupTabBarItems{

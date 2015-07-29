@@ -22,6 +22,7 @@ extern CGFloat const JKTabBarSelectionIndicatorAnimationDuration;
 - (void)beginCustomizingItems:(NSArray *)items;   // list all items that can be reordered. always animates a sheet up. visible items not listed are fixed in place
 - (BOOL)endCustomizingAnimated:(BOOL)animated;    // hide customization sheet. normally you should let the user do it. check list of items to see new layout. returns YES if layout changed
 - (BOOL)isCustomizing;
+-(void)isBlurForHiddenPartViews:(BOOL)isBlur;
 
 
 /* tintColor will be applied to the tab bar background
@@ -48,8 +49,6 @@ extern CGFloat const JKTabBarSelectionIndicatorAnimationDuration;
   Default is NO.When set,selectionIndicatorImage will move smoothly to selected item.
  */
 @property (nonatomic) BOOL selectionIndicatorAnimable UI_APPEARANCE_SELECTOR;
-
--(void)_setupBackgroundBlurViewIsHidden:(BOOL)isHidden  blurTintColor:(UIColor *)blurTintColor backgroundlineViewColor:(UIColor *)backgroundlineViewColor;
 
 @end
 

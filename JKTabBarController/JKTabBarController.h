@@ -36,6 +36,10 @@ typedef NS_ENUM(NSUInteger, JKTabBarPosition){
     JKTabBarPositionLeft,
     JKTabBarPositionRight
 };
+typedef NS_ENUM(NSUInteger,NightOrLightModel) {
+    LightModel,
+    NightModel
+};
 
 NS_INLINE BOOL JKTabBarIsVertical(JKTabBarPosition position) {
     return position == JKTabBarPositionLeft || position == JKTabBarPositionRight;
@@ -53,6 +57,7 @@ NS_INLINE BOOL JKTabBarIsHorizontal(JKTabBarPosition position) {
 // If the number of view controllers is greater than the number displayable by a tab bar, a "More" navigation controller will automatically be shown.
 // The "More" navigation controller will not be returned by -viewControllers, but it may be returned by -selectedViewController.
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
+-(void)showBlurView:(BOOL)isShow  lightOrNight:(NightOrLightModel) model;
 
 @property (nonatomic,weak)      UIViewController *selectedViewController; // This may return the "More" navigation controller if it exists.
 @property (nonatomic)           NSUInteger selectedIndex;
